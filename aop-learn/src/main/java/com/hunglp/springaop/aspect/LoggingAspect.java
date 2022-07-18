@@ -25,7 +25,7 @@ public class LoggingAspect {
     // (*) : matches a method with one argument of any type
     // (..) : matches a method with 0 or more argument of any type
 
-    public void beforeAddAccount(){
+    public void beforeAddAccount() {
         System.out.println("Executing @Before advice on addAccount()");
 
 
@@ -40,19 +40,19 @@ public class LoggingAspect {
 
     // Pointcut for getter method
     @Pointcut("execution(* com.hunglp.springaop.dao.*.get*(..))")
-    public void forGetterMethod(){
+    public void forGetterMethod() {
 
     }
 
     // Pointcut for setter method
     @Pointcut("execution(* com.hunglp.springaop.dao.*.set*(..))")
-    public void forSetterMethod(){
+    public void forSetterMethod() {
 
     }
 
     // Pointcut for all method in package.. exclude getter/setter method
     @Pointcut("forDaoPackage() && !(forGetterMethod() || forSetterMethod())")
-    private void forDaoPackageNoGetterSetter(){
+    private void forDaoPackageNoGetterSetter() {
 
     }
 
@@ -63,7 +63,7 @@ public class LoggingAspect {
 
         Object[] args = joinPoint.getArgs();
         System.out.println("Method argument : ");
-        for(Object arg : args){
+        for (Object arg : args) {
             System.out.println(arg);
         }
 
@@ -75,8 +75,8 @@ public class LoggingAspect {
     // ----------------------------------------------------AFTER--------------------------------------------------------
 
     @AfterReturning(pointcut = "execution(* com.hunglp.springaop.dao.AccountDAO.findAccounts(..))",
-                    returning = "result")
-    public void afterReturningFindAccounts(JoinPoint joinPoint, List<Account> result){
+            returning = "result")
+    public void afterReturningFindAccounts(JoinPoint joinPoint, List<Account> result) {
 
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         System.out.println("=> Executing @AfterReturning on method  : " + methodSignature.toShortString());
@@ -86,6 +86,19 @@ public class LoggingAspect {
 
         System.out.println(" => Result : " + result);
 
+    }
+
+    // ---------------------------------------------AFTER THROWING------------------------------------------------------
+    // ----USE CASE :
+    // 1. Log the Exception
+    // 2. Perform auditing on the exception
+    // 3. Notify devops team via email or SMS
+
+    @AfterThrowing(pointcut = "execution(* com.hunglp.springaop.dao.AccountDAO.findAccounts(..))",
+                   throwing = "exception")
+    public void afterThrowingFindAccount(JoinPoint joinPoint, Throwable exception) {
+
+        System.out.println("Exception : " + exception);
     }
 
 }

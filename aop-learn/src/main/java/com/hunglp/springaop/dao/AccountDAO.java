@@ -28,10 +28,20 @@ public class AccountDAO {
 
     public List<Account> findAccounts() {
         List<Account> accounts = new ArrayList<>();
-        accounts.add(new Account("Hung","1"));
-        accounts.add(new Account("Tuan","2"));
-        accounts.add(new Account("C","3"));
+        accounts.add(new Account("Hung","1", false));
+        accounts.add(new Account("Tuan","2", false));
+        accounts.add(new Account("C","3",false));
         return accounts;
+    }
+
+    public Account findAccounts(String accountName){
+        List<Account> accounts = new ArrayList<>();
+        accounts.add(new Account("Hung","1", false));
+        accounts.add(new Account("Tuan","2", false));
+        accounts.add(new Account("C","3",false));
+
+        return  accounts.stream().filter(item -> item.getName().equals(accountName)).findFirst().orElseThrow(NullPointerException::new);
+
     }
 
     public void addAccount(Account account) {

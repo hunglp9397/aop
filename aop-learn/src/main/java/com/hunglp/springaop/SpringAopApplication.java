@@ -39,11 +39,18 @@ public class SpringAopApplication {
 //          accountDAO.addAccount(new Account("HungLePhi", "1"));
 
         // Test @After
-        List<Account> accounts = accountDAO.findAccounts();
-        System.out.println(accounts);
+//        List<Account> accounts = accountDAO.findAccounts();
+//        System.out.println(accounts);
+//
 
+        // Test After Throwing
 
+        try {
 
+           Account account = accountDAO.findAccounts("xx");
+        } catch (Exception e) {
+            System.out.println("Main method caught exception : " + e);
+        }
 
 
     }
