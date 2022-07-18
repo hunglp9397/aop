@@ -98,7 +98,26 @@ public class LoggingAspect {
                    throwing = "exception")
     public void afterThrowingFindAccount(JoinPoint joinPoint, Throwable exception) {
 
-        System.out.println("Exception : " + exception);
+        System.out.println("==>> Executing @AfterThrowing, Exception : " + exception);
     }
+
+    // ----------------------------------------------AFTER ADVICE-------------------------------------------------------
+    // USE CASE:
+    // 1. Log the Exception / or perform auditing
+    // 2. Code to run regardless of method outcome
+    // 3. Encapsulate this functionality in AOP aspect for easy reuse
+    // Tips : After advice does not have access to the exception,If you need exception, then use @AfterThrowingAdvice
+
+
+    @After("execution(* com.hunglp.springaop.dao.AccountDAO.findAccounts(..))")
+    public void afterAdviceFindAccount(JoinPoint joinPoint){
+        System.out.println(" =>> Executing @After Advice (Similar Finally) ");
+
+    }
+
+
+
+
+
 
 }
