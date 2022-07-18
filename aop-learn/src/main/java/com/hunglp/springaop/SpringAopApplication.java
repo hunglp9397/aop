@@ -8,12 +8,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 import java.lang.reflect.AnnotatedArrayType;
+import java.util.List;
 
 @SpringBootApplication
 public class SpringAopApplication {
     public static void main(String[] args) {
 
         ApplicationContext context = SpringApplication.run(SpringAopApplication.class, args);
+
+        AccountDAO accountDAO = context.getBean("accountDAO", AccountDAO.class);
 
 
 //         Test add*() execution "beforeAddAccount"
@@ -32,8 +35,14 @@ public class SpringAopApplication {
 //        String serviceCode = accountDAO.getServiceCode();
 
         // Test add*() execution JoinPoint
-          AccountDAO accountDAO = context.getBean("accountDAO", AccountDAO.class);
-          accountDAO.addAccount(new Account("HungLePhi", "1"));
+//          AccountDAO accountDAO = context.getBean("accountDAO", AccountDAO.class);
+//          accountDAO.addAccount(new Account("HungLePhi", "1"));
+
+        // Test @After
+        List<Account> accounts = accountDAO.findAccounts();
+        System.out.println(accounts);
+
+
 
 
 

@@ -2,18 +2,21 @@ package com.hunglp.springaop.aspect;
 
 
 import com.hunglp.springaop.dao.AccountDAO;
+import com.hunglp.springaop.model.Account;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Locale;
 
 @Aspect
 @Component
 public class LoggingAspect {
+
+    //--------------------------------------------------BEFORE----------------------------------------------------------
 
     @Before("execution(public void add*())")            // Match any method start with "add"
     //@Before("execution(* add*())")                    // Add any method start with "add" and any return type
@@ -27,10 +30,6 @@ public class LoggingAspect {
 
 
     }
-
-
-
-
 
 
     // Point cut for all method in package DAO
@@ -73,6 +72,20 @@ public class LoggingAspect {
     }
 
 
+    // ----------------------------------------------------AFTER--------------------------------------------------------
 
+    @AfterReturning(pointcut = "execution(* com.hunglp.springaop.dao.AccountDAO.findAccounts(..))",
+                    returning = "result")
+    public void afterReturningFindAccounts(JoinPoint joinPoint, List<Account> result){
+
+        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        System.out.println("=> Executing @AfterReturning on method  : " + methodSignature.toShortString());
+
+        // Convert the accounts to upperCase
+        result.forEach(a -> a.setName(a.getName().toUpperCase(Locale.ROOT)));
+
+        System.out.println(" => Result : " + result);
+
+    }
 
 }
